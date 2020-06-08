@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Disabled</key>
+	<false/>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>/usr/bin:/bin:/usr/sbin:/sbin</string>
+	</dict>
+	<key>Label</key>
+	<string>usr.music.trackart2iTermBGimg</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/bin/osascript</string>
+		<string>-e</string>
+		<string>if application "iTerm" is running then</string>
+		<string>-e</string>
+		<string>if application "Music" is running then</string>
+		<string>-e</string>
+		<string>do shell script "if [ ! -d " &amp; POSIX path of (((path to home folder) as text) &amp; ".config") &amp; "]; then mkdir -p " &amp; (POSIX path of (((path to home folder) as text) &amp; ".config")) &amp; "; fi"</string>
+		<string>-e</string>
+		<string>tell application "Music" to tell artwork 1 of current track</string>
+		<string>-e</string>
+		<string>set srcBytes to raw data</string>
+		<string>-e</string>
+		<string>end tell</string>
+		<string>-e</string>
+		<string>set fileName to (((path to home folder) as text) &amp; ".config:music-track-cover")</string>
+		<string>-e</string>
+		<string>set outFile to open for access file (fileName &amp; ".tmp") with write permission</string>
+		<string>-e</string>
+		<string>set eof outFile to 0</string>
+		<string>-e</string>
+		<string>write srcBytes to outFile</string>
+		<string>-e</string>
+		<string>close access outFile</string>
+		<string>-e</string>
+		<string>try</string>
+		<string>-e</string>
+		<string>do shell script "cmp --silent " &amp; POSIX path of fileName &amp; " " &amp; (POSIX path of (fileName) &amp; ".tmp")</string>
+		<string>-e</string>
+		<string>on error</string>
+		<string>-e</string>
+		<string>do shell script "/bin/mv -f " &amp; (POSIX path of (fileName) &amp; ".tmp") &amp; " " &amp; POSIX path of fileName</string>
+		<string>-e</string>
+		<string>end try</string>
+		<string>-e</string>
+		<string>tell application "iTerm"</string>
+		<string>-e</string>
+		<string>tell current session of current window</string>
+		<string>-e</string>
+		<string>set background image to (POSIX path of (((path to home folder) as text) &amp; ".config:music-track-cover"))</string>
+		<string>-e</string>
+		<string>end tell</string>
+		<string>-e</string>
+		<string>end tell</string>
+		<string>-e</string>
+		<string>else</string>
+		<string>-e</string>
+		<string>tell application "iTerm"</string>
+		<string>-e</string>
+		<string>tell current session of current window</string>
+		<string>-e</string>
+		<string>set bgimg to background image</string>
+		<string>-e</string>
+		<string>end tell</string>
+		<string>-e</string>
+		<string>end tell</string>
+		<string>-e</string>
+		<string>if bgimg is equal to (POSIX path of (((path to home folder) as text) &amp; ".config:music-track-cover")) then</string>
+		<string>-e</string>
+		<string>tell application "iTerm"</string>
+		<string>-e</string>
+		<string>tell current session of current window</string>
+		<string>-e</string>
+		<string>set background image to ""</string>
+		<string>-e</string>
+		<string>end tell</string>
+		<string>-e</string>
+		<string>end tell</string>
+		<string>-e</string>
+		<string>do shell script "echo  !&gt; " &amp; (POSIX path of (((path to home folder) as text) &amp; ".config:music-track-cover"))</string>
+		<string>-e</string>
+		<string>end if</string>
+		<string>-e</string>
+		<string>end if</string>
+		<string>-e</string>
+		<string>end if</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StartInterval</key>
+	<integer>10</integer>
+</dict>
+</plist>
