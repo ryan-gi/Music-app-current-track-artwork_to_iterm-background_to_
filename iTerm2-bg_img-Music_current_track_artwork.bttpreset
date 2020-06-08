@@ -1,0 +1,43 @@
+{
+  "BTTPresetName" : "iTerm2-bg_img-Music_current_track_artwork",
+  "BTTPresetColor" : "107.715825, 206.550000, 2.065500, 255.000000",
+  "BTTPresetUUID" : "D8BCCD97-0C84-4346-8365-442B16346AB9",
+  "BTTPresetContent" : [
+    {
+      "BTTAppBundleIdentifier" : "BT.G",
+      "BTTAppName" : "Global",
+      "BTTAppAutoInvertIcon" : 1,
+      "BTTTriggers" : [
+        {
+          "BTTTriggerType" : 678,
+          "BTTTriggerTypeDescription" : "Repeating or Time Based Trigger",
+          "BTTTriggerClass" : "BTTTriggerTypeOtherTriggers",
+          "BTTPredefinedActionType" : 172,
+          "BTTPredefinedActionName" : "Run Apple Script (blocking)",
+          "BTTInlineAppleScript" : "if application \"iTerm\" is running then\r\t-- Run if iTerm2 is running\r\tif application \"Music\" is running then\r\t\t-- if Music is running, set the current track coverwork to iTerm background image\r\t\t-- fetch current track album coverwork\r\t\t\r\t\t-- create .config folder under home directory if it doesn't exist already\r\t\tdo shell script \"if [ ! -d \" & POSIX path of (((path to home folder) as text) & \".config\") & \"]; then mkdir -p \" & (POSIX path of (((path to home folder) as text) & \".config\")) & \"; fi\"\r\t\ttell application \"Music\" to tell artwork 1 of current track\r\t\t\tset srcBytes to raw data\r\t\t\t-- we could figure out the proper file extension append it to file name, but won't for simplicity since iterm will read file w\/o it\r\t\tend tell\r\t\t\r\t\t-- set the filename to ~\/.config\/music-track-cover\r\t\t-- for best results, set this file as your profile background image in iTerm2. To select the greyed out file, navigate to the file and right click to rename->press Esc to cancel rename->verify greyed out file is still selected->click open\r\t\tset fileName to (((path to home folder) as text) & \".config:music-track-cover\")\r\t\t-- write to file\r\t\tset outFile to open for access file (fileName & \".tmp\") with write permission\r\t\t-- truncate the file\r\t\tset eof outFile to 0\r\t\t-- write the image bytes to the filez\r\t\twrite srcBytes to outFile\r\t\tclose access outFile\r\t\t\r\t\ttry\r\t\t\tdo shell script \"cmp --silent \" & POSIX path of fileName & \" \" & (POSIX path of (fileName) & \".tmp\")\r\t\ton error\r\t\t\tdo shell script \"\/bin\/mv -f \" & (POSIX path of (fileName) & \".tmp\") & \" \" & POSIX path of fileName\r\t\tend try\r\t\t-- set\/refresh the background image to the current track album coverwork\r\t\ttell application \"iTerm\"\r\t\t\ttell current session of current window\r\t\t\t\tset background image to (POSIX path of (((path to home folder) as text) & \".config:music-track-cover\"))\r\t\t\tend tell\r\t\tend tell\r\telse\r\t\t-- if music isn't running, check what background image is set to\r\t\ttell application \"iTerm\"\r\t\t\ttell current session of current window\r\t\t\t\tset bgimg to background image\r\t\t\tend tell\r\t\tend tell\r\t\t\r\t\t-- if the background image is set to the album cover, set to empty and clear data from cover file\r\t\tif bgimg is equal to (POSIX path of (((path to home folder) as text) & \".config:music-track-cover\")) then\r\t\t\ttell application \"iTerm\"\r\t\t\t\ttell current session of current window\r\t\t\t\t\tset background image to \"\"\r\t\t\t\tend tell\r\t\t\tend tell\r\t\t\t-- set artwork file data to empty so new sessions don't start with old artwork\r\t\t\tdo shell script \"echo '' !> \" & (POSIX path of (((path to home folder) as text) & \".config:music-track-cover\"))\r\t\tend if\r\tend if\rend if",
+          "BTTAdditionalConfiguration" : "{\"BTTTimedRepeatEveryXSeconds\":\"5\"}",
+          "BTTEnabled2" : 1,
+          "BTTAlternateModifierKeys" : 0,
+          "BTTRepeatDelay" : 0,
+          "BTTUUID" : "A1C6032A-6881-4D62-8CC3-A86F23C96A35",
+          "BTTNotesInsteadOfDescription" : 0,
+          "BTTEnabled" : 1,
+          "BTTModifierMode" : 0,
+          "BTTOrder" : 0,
+          "BTTDisplayOrder" : 0
+        }
+      ]
+    },
+    {
+      "BTTAppBundleIdentifier" : "com.apple.finder",
+      "BTTAppName" : "Finder",
+      "BTTAppAutoInvertIcon" : 1,
+      "BTTTriggers" : [
+
+      ]
+    }
+  ],
+  "BTTPresetSnapAreas" : [
+
+  ]
+}
